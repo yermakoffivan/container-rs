@@ -227,20 +227,26 @@ mod linux_tests {
     #[test]
     fn to_docker_json_emits_test_variants() {
         // CMD-SHELL / CMD / NONE / [] の各形態が JSON 配列として正しく出ること。
-        let shell = Healthcheck::cmd_shell("true").to_docker_json().unwrap();
+        let shell = Healthcheck::cmd_shell("true")
+            .to_docker_json()
+            .expect("CMD-SHELL の JSON を生成できること");
         assert_eq!(shell, r#"{"Test":["CMD-SHELL","true"]}"#);
 
-        let cmd = Healthcheck::cmd(["echo", "ok"]).to_docker_json().unwrap();
+        let cmd = Healthcheck::cmd(["echo", "ok"])
+            .to_docker_json()
+            .expect("CMD の JSON を生成できること");
         assert_eq!(cmd, r#"{"Test":["CMD","echo","ok"]}"#);
 
-        let none = Healthcheck::none().to_docker_json().unwrap();
+        let none = Healthcheck::none()
+            .to_docker_json()
+            .expect("NONE の JSON を生成できること");
         assert_eq!(none, r#"{"Test":["NONE"]}"#);
 
         // empty + interval は Test=[] を出しつつ Interval を付ける。
         let empty_with_interval = Healthcheck::empty()
             .with_interval(Duration::from_secs(5))
             .to_docker_json()
-            .unwrap();
+            .expect("空 Test + Interval の JSON を生成できること");
         assert_eq!(empty_with_interval, r#"{"Test":[],"Interval":5000000000}"#);
     }
 
@@ -250,7 +256,9 @@ mod linux_tests {
         let hc = Healthcheck::cmd_shell("true")
             .with_interval(Duration::from_secs(30))
             .with_timeout(Duration::ZERO);
-        let json = hc.to_docker_json().unwrap();
+        let json = hc
+            .to_docker_json()
+            .expect("Healthcheck の JSON を生成できること");
         assert!(
             json.contains(r#""Interval":30000000000"#),
             "30 秒が nanosecond で出ること: {json}"
@@ -273,13 +281,17 @@ mod linux_tests {
     fn to_docker_json_escapes_test_elements() {
         // Test 要素の特殊文字が正しく escape されること。
         let hc = Healthcheck::cmd_shell("a\"b\\c\nd");
-        let json = hc.to_docker_json().unwrap();
+        let json = hc
+            .to_docker_json()
+            .expect("Healthcheck の JSON を生成できること");
         assert_eq!(
             json, r#"{"Test":["CMD-SHELL","a\"b\\c\nd"]}"#,
             "引用符・バックスラッシュ・改行が escape されること"
         );
 
-        let multibyte = Healthcheck::cmd_shell("日本語").to_docker_json().unwrap();
+        let multibyte = Healthcheck::cmd_shell("日本語")
+            .to_docker_json()
+            .expect("マルチバイト文字を含む JSON を生成できること");
         assert_eq!(
             multibyte, r#"{"Test":["CMD-SHELL","日本語"]}"#,
             "マルチバイト文字はそのまま出ること"
