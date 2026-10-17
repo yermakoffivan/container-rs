@@ -14,6 +14,11 @@
 - [ADD] macOS で `with_kernel` によりコンテナ単位でカスタムカーネルを指定できるようにする
   - @voluntas
 
+### misc
+
+- [UPDATE] モジュール定義を `mod.rs` から `<module>.rs` 形式に統一する
+  - @voluntas
+
 ## 2026.1.1
 
 **リリース日**: 2026-10-07
