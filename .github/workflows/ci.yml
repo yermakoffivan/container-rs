@@ -43,8 +43,8 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - run: rustup toolchain install 1.93.0 --profile minimal
-      - run: cargo +1.93.0 check --all-features
+      - run: rustup toolchain install 1.95.0 --profile minimal
+      - run: cargo +1.95.0 check --all-features
 
   # Linux 側 (target_os = "linux" の分岐) は self-hosted (macOS) ではコンパイルされないため、
   # ビルドと単体・統合テストをここで確認する。

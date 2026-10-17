@@ -20,7 +20,7 @@ Apple の [container](https://github.com/apple/container) 対応をメインと�
 - crate 名: `shiguredo_container`
 - バージョン: 2026.1.1
 - Rust Edition: 2024
-- 最小 Rust バージョン: 1.93
+- 最小 Rust バージョン: 1.95
 - ライセンス: Apache-2.0
 
 ## 要件

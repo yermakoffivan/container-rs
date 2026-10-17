@@ -11,6 +11,8 @@
 
 ## develop
 
+- [CHANGE] 最小 Rust バージョン (MSRV) を 1.95 に引き上げる
+  - @voluntas
 - [ADD] macOS で `with_kernel` によりコンテナ単位でカスタムカーネルを指定できるようにする
   - @voluntas
 
