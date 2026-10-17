@@ -67,6 +67,8 @@ fn log_stream_decoder() -> ResponseDecoder {
 ///
 /// async 文脈で保持したまま await しない運用を守るため、バッファは `std::sync::Mutex` で
 /// 保持し、ロック取得中はコピーとヘッド位置更新だけを行って即 drop する。
+/// チャネルではなく共有リングバッファにしているのは、stdout / stderr の複数リーダーが
+/// それぞれ独立したオフセットから過去のログを読み返せる必要があるため。
 pub(crate) struct LogStream {
     buffer: std::sync::Mutex<SharedLogBuffer>,
     /// 追記・終端を通知する。demux タスクが `notify_waiters` を呼ぶ。
@@ -296,6 +298,9 @@ pub(crate) struct DockerLogsHandle {
     /// demux タスクへの停止指示。
     log_stop: Arc<AtomicBool>,
     /// 外部から `shutdown(Shutdown::Both)` を発行するための複製ソケット。
+    ///
+    /// 停止処理は `&self` から呼ばれ、ソケットを 1 回だけ取り出して shutdown する。
+    /// `Option::take` を競合なく行うための短時間のロックであり、await はまたがない。
     shutdown_socket: std::sync::Mutex<Option<UnixStream>>,
     /// demux タスク完了フラグ。
     demux_done: Arc<AtomicBool>,

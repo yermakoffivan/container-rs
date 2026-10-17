@@ -70,10 +70,20 @@ pub struct ContainerAsync<I: Image> {
     /// バックグラウンド wait スレッドが `containerWait` (macOS) /
     /// `POST /containers/{id}/wait` (Linux) を待ち、終了時に値が入る。
     /// 世代番号で再 start 後の旧スレッド書き込みを破棄する。
+    ///
+    /// 書き込みは wait スレッド、読み出しは API 呼び出し側という一方向の共有で、
+    /// ロック保持は数フィールドの読み書きだけのため Mutex を使う。チャネルにすると
+    /// 現在値の取得に問い合わせが必要になり、同期 API からも参照する都合で複雑になる。
     wait_state: Arc<std::sync::Mutex<WaitState>>,
     /// ログ取得元。再 start 時に差し替えるため Mutex で保持する。
+    ///
+    /// 差し替えは `&self` の再 start 経路から行うため interior mutability が要る。
+    /// 値の取得・差し替えは短時間で完結し、await をまたがない。
     log_source: std::sync::Mutex<ContainerLogSource>,
     /// LogConsumer 配信タスクへの停止指示 (macOS)。再 start 時に新旧を差し替える。
+    ///
+    /// `AtomicBool` 自体はロック不要だが、差し替え対象の `Arc` を `&self` から
+    /// 更新する必要があるため Mutex で保護する。ロック保持中に await はしない。
     #[cfg(target_os = "macos")]
     log_stop: std::sync::Mutex<Arc<AtomicBool>>,
     /// LogConsumer 再 spawn 用に保持する。未登録なら None。

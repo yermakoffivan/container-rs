@@ -33,6 +33,10 @@ done
 "#;
 
 /// reaper の stdin。初期化時は spawn せず、`register` 経路でのみ起動する。
+///
+/// `register` は任意のスレッドから呼ばれるため、spawn / respawn で差し替わる stdin を
+/// 共有する必要がある。登録は同期関数であり、専用タスクへ操作を依頼すると呼び出し側で
+/// 完了待ちが別途必要になるため、書き込み中の短時間だけロックする Mutex で保護する。
 static REAPER: OnceLock<Mutex<Option<std::process::ChildStdin>>> = OnceLock::new();
 
 /// spawn / respawn の失敗回数。

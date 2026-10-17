@@ -12,6 +12,9 @@ use crate::{
     runners::AsyncRunner,
 };
 
+// 同期 API の `Container` が共有 Runtime を参照し、最後の 1 本が drop された時点で
+// ランタイムも破棄する必要がある。Runtime の所有権を専用タスクへ移すと、同期 API の
+// `block_on` からランタイム本体を直接呼べなくなるため、Weak を Mutex で保護して共有する。
 static ASYNC_RUNTIME: OnceLock<Mutex<Weak<tokio::runtime::Runtime>>> = OnceLock::new();
 
 /// 同期ランナー。
