@@ -1,4 +1,4 @@
-//! `ExecResult` — exec の結果。元の 0.27 の `core::containers::async_container::exec` と同一シグネチャ。
+//! `ExecResult` — exec の結果。元の 0.28 の `core::containers::async_container::exec` と同一シグネチャ。
 //!
 //! macOS (XPC) では `containerCreateProcess` に pipe FD を渡して stdout / stderr を取得する。
 //! 本家はログストリームを追いかけるリーダーを返すが、shiguredo は exec 完了時点で

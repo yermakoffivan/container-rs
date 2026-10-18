@@ -1,4 +1,4 @@
-//! `ContainerAsync` と関連型。元の 0.27 の `core::containers` に相当。
+//! `ContainerAsync` と関連型。元の 0.28 の `core::containers` に相当。
 
 pub(crate) mod async_container;
 pub(crate) mod request;

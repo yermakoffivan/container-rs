@@ -1,10 +1,10 @@
 # testcontainers-rs / Apple Container / Docker Engine API の比較
 
-本表は [testcontainers-rs](https://github.com/testcontainers/testcontainers-rs) 0.27.3 の公開 API を基準に、本クレートの 2 バックエンドを並べて比較する。
+本表は [testcontainers-rs](https://github.com/testcontainers/testcontainers-rs) 0.28.0 の公開 API を基準に、本クレートの 2 バックエンドを並べて比較する。
 
 | 列 | 意味 |
 |:--|:--|
-| 本家 | testcontainers-rs 0.27.3 (bollard 経由の Docker Engine) |
+| 本家 | testcontainers-rs 0.28.0 (bollard 0.21 経由の Docker Engine) |
 | Apple Container | 本クレートの macOS 実装 (XPC)。メイン対象 |
 | Docker Engine API | 本クレートの Linux 実装 (`DockerClient` + unix socket)。ライフサイクル・ログ関連・copy・bridge IP 取得は配線済み、ネットワークの自動作成等は未対応 |
 
@@ -192,7 +192,7 @@ Linux 列の残ギャップは、本表で本家 / Apple / 自前 Docker の差�
 | `async fn pause(&self) -> Result<()>` | あり | なし | 対応 | `ContainerAsync` のみ。sync `Container` には無い (7 章参照)。macOS は `#[cfg(target_os = "linux")]` でクローズ / Docker: `POST /containers/{id}/pause` |
 | `async fn unpause(&self) -> Result<()>` | あり | なし | 対応 | 同上 / Docker: `POST /containers/{id}/unpause` (304 冪等) |
 | `async fn is_running(&self) -> Result<bool>` | あり | 対応 | 対応 | `XpcClient::container_state` の `running` を返す / Docker: ContainerAsync の Linux 分岐から DockerClient を呼び出し |
-| `async fn container_state(&self) -> Result<ContainerState>` | なし | shiguredo 拡張 | 対応 | XPC `containerState`。本家 0.27 に無し。`ContainerState::from_container` は本メソッドへ委譲 / Docker: ContainerAsync の Linux 分岐から DockerClient を呼び出し |
+| `async fn container_state(&self) -> Result<ContainerState>` | なし | shiguredo 拡張 | 対応 | XPC `containerState`。本家 0.28 に無し。`ContainerState::from_container` は本メソッドへ委譲 / Docker: ContainerAsync の Linux 分岐から DockerClient を呼び出し |
 | `async fn exit_code(&self) -> Result<Option<i64>>` | あり | 対応 | 部分対応 | macOS: バックグラウンド wait のキャッシュ優先、停止済みかつ未観測なら 5 秒タイムアウトで都度 `containerWait` を呼び取得を試みる (取得失敗時は `Ok(None)`) / Docker: バックグラウンド wait スレッド (`POST /containers/{id}/wait?condition=not-running`) の観測済みキャッシュのみ。未観測のときは停止後も `None` |
 | `async fn copy_file_from<T>(&self, path, target: T) -> Result<T::Output>` | あり | 対応 | 対応 | XPC `containerCopyOut` でホスト上の一時ファイルに書き出し、`CopyFileFromContainer` に流し込む / Docker: `GET /containers/{id}/archive` の tar を自前 ustar パーサで展開し先頭 regular file を渡す。ディレクトリは `IsDirectory`、source は絶対パス必須。tar 全体は 64 MiB 上限・超過時エラー (macOS 側にこの上限は無い)。404 はコンテナ内パス不存在 `ContainerPathNotFound` / コンテナ不存在 `ContainerNotFound` をボディの daemon メッセージで区別 |
 | `async fn rm(mut self) -> Result<()>` | あり | 対応 | 対応 | XPC `containerDelete` / Docker: ContainerAsync の Linux 分岐から DockerClient を呼び出し |
@@ -241,7 +241,7 @@ Linux 列の残ギャップは、本表で本家 / Apple / 自前 Docker の差�
 | `stdout_to_vec(&self) -> Result<Vec<u8>>` | あり | 対応 | 対応 | `ContainerAsync::stdout_to_vec` に委譲 / Docker: 1-shot 取得 |
 | `stderr_to_vec(&self) -> Result<Vec<u8>>` | あり | 対応 | 対応 | `ContainerAsync::stderr_to_vec` に委譲 / Docker: 1-shot 取得 |
 | `is_running(&self) -> Result<bool>` | あり | 対応 | 対応 | `ContainerAsync::is_running` に委譲 / Docker: ContainerAsync の Linux 分岐から DockerClient を呼び出し |
-| `container_state(&self) -> Result<ContainerState>` | なし | shiguredo 拡張 | 対応 | `ContainerAsync::container_state` に委譲。本家 0.27 に無し / Docker: ContainerAsync の Linux 分岐から DockerClient を呼び出し |
+| `container_state(&self) -> Result<ContainerState>` | なし | shiguredo 拡張 | 対応 | `ContainerAsync::container_state` に委譲。本家 0.28 に無し / Docker: ContainerAsync の Linux 分岐から DockerClient を呼び出し |
 | `exit_code(&self) -> Result<Option<i64>>` | あり | 対応 | 部分対応 | `ContainerAsync::exit_code` に委譲。6.1 委譲・制約同じ (macOS は停止後都度取得、Docker は観測済みキャッシュのみ) / Docker: バックグラウンド wait スレッドの観測済みキャッシュのみ |
 
 ## 8. `ContainerRequest<I>` のメソッド (`core::containers::request`)
@@ -357,7 +357,7 @@ shiguredo は reqwest ではなく `shiguredo_http11` + `tokio::net::TcpStream` 
 | `pub fn with_bearer_auth(mut, t)` | あり | 対応 | 対応 |  |
 | `pub fn with_tls(mut)` | あり | なし | なし | TLS 非対応 (方針) |
 | `pub fn with_poll_interval(mut, d)` | あり | 対応 | 対応 |  |
-| `pub fn with_request_timeout(mut, d)` | なし | shiguredo 拡張 | shiguredo 拡張 | HTTP リクエスト 1 回のタイムアウトを設定する (既定 10 秒)。本家 0.27.3 に無い shiguredo 拡張 |
+| `pub fn with_request_timeout(mut, d)` | なし | shiguredo 拡張 | shiguredo 拡張 | HTTP リクエスト 1 回のタイムアウトを設定する (既定 10 秒)。本家 0.28.0 に無い shiguredo 拡張 |
 | `pub fn with_expected_status_code(mut, s)` | あり | 対応 | 対応 |  |
 | `pub fn with_response_matcher(mut, f)` | あり | 部分対応 (意図的) | 部分対応 (意図的) | 受信済みレスポンスの独自型を渡す |
 | `pub fn with_response_matcher_async(mut, f)` | あり | なし | なし | body 受信済みのため同期 matcher で足りる (方針) |
@@ -377,7 +377,7 @@ shiguredo は reqwest ではなく `shiguredo_http11` + `tokio::net::TcpStream` 
 
 ### 10.5 `WaitStrategy` (`pub(crate)` trait) — 廃止済み
 
-本家 0.27 には `pub(crate) trait WaitStrategy` があるが、shiguredo では廃止済み。各戦略型 (`LogWaitStrategy` / `HealthWaitStrategy` / `HttpWaitStrategy` / `ExitWaitStrategy`) が直接 `pub(crate) async fn wait_until_ready` を持つインherent メソッド方式に変更済み。`WaitFor::wait_until_ready` が各戦略のメソッドを直接呼び出す。
+本家 0.28 には `pub(crate) trait WaitStrategy` があるが、shiguredo では廃止済み。各戦略型 (`LogWaitStrategy` / `HealthWaitStrategy` / `HttpWaitStrategy` / `ExitWaitStrategy`) が直接 `pub(crate) async fn wait_until_ready` を持つインherent メソッド方式に変更済み。`WaitFor::wait_until_ready` が各戦略のメソッドを直接呼び出す。
 
 ## 11. `LogConsumer` / `LoggingConsumer` / `LogFrame` / `LogSource`
 

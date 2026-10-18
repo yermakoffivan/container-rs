@@ -1,4 +1,4 @@
-//! 終了待機戦略。元の 0.27 の `core::wait::exit_strategy` と同一シグネチャ。
+//! 終了待機戦略。元の 0.28 の `core::wait::exit_strategy` と同一シグネチャ。
 
 use std::time::Duration;
 

@@ -1,4 +1,4 @@
-//! HTTP 待機戦略。本家 testcontainers-rs 0.27 の `core::wait::http_strategy` に相当。
+//! HTTP 待機戦略。本家 testcontainers-rs 0.28 の `core::wait::http_strategy` に相当。
 //!
 //! 本家 testcontainers-rs は reqwest を使うが、shiguredo は依存最小方針のため
 //! `shiguredo_http11` + `tokio::net::TcpStream` で plain HTTP のみ対応する (TLS 非対応)。
@@ -23,7 +23,7 @@ use crate::{
 const DEFAULT_REQUEST_TIMEOUT: Duration = Duration::from_secs(10);
 const MAX_HTTP_RESPONSE_BODY_BYTES: usize = 1024 * 1024;
 
-/// HTTP 待機のエラー。元の 0.27 の `HttpWaitError` に相当。
+/// HTTP 待機のエラー。元の 0.28 の `HttpWaitError` に相当。
 #[derive(Debug)]
 pub enum HttpWaitError {
     /// コンテナに公開ポートが無い。
@@ -104,7 +104,7 @@ enum Auth {
     Bearer(String),
 }
 
-/// HTTP レスポンスによる待機戦略。元の 0.27 の `HttpWaitStrategy` と同等の API。
+/// HTTP レスポンスによる待機戦略。元の 0.28 の `HttpWaitStrategy` と同等の API。
 #[derive(Clone)]
 pub struct HttpWaitStrategy {
     path: String,

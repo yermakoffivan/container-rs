@@ -854,7 +854,7 @@ mod test_container_xpc {
                 .map(|d| d.as_nanos())
                 .unwrap_or(0)
         ));
-        // 本家 0.27 と同じく PathBuf 宛のコピーは () を返す。
+        // 本家 0.28 と同じく PathBuf 宛のコピーは () を返す。
         container
             .copy_file_from("/etc/os-release", temp_path.clone())
             .await

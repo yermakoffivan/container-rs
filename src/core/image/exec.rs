@@ -1,4 +1,4 @@
-//! `ExecCommand`。元の testcontainers 0.27 のサブセット（差分の正は `docs/TESTCONTAINERS.md` の該当節 12.1）。
+//! `ExecCommand`。元の testcontainers 0.28 のサブセット（差分の正は `docs/TESTCONTAINERS.md` の該当節 12.1）。
 
 use std::collections::BTreeMap;
 

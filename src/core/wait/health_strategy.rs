@@ -1,4 +1,4 @@
-//! ヘルスチェック待機戦略。元の testcontainers 0.27 の `core::wait::health_strategy` と同一シグネチャ。
+//! ヘルスチェック待機戦略。元の testcontainers 0.28 の `core::wait::health_strategy` と同一シグネチャ。
 //!
 //! Linux は inspect をポーリングし、`starting` / `healthy` / `unhealthy` /
 //! `Health` 不在 (running 後は `HealthCheckNotConfigured`) の 4 分岐で判定する。

@@ -1,5 +1,5 @@
 //! `ContainerRequest` と関連型。
-//! testcontainers-rs 0.27 のサブセット (差分の正は `docs/TESTCONTAINERS.md`)。
+//! testcontainers-rs 0.28 のサブセット (差分の正は `docs/TESTCONTAINERS.md`)。
 
 use std::{
     borrow::Cow,

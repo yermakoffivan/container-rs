@@ -1,4 +1,4 @@
-//! `runners` — コンテナ起動のトレイト。元の 0.27 の `runners` と同一シグネチャ。
+//! `runners` — コンテナ起動のトレイト。元の 0.28 の `runners` と同一シグネチャ。
 
 pub(crate) mod async_runner;
 

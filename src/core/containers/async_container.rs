@@ -1,5 +1,5 @@
 //! `ContainerAsync` — 実行中コンテナのハンドル。
-//! 元の 0.27 の `core::containers::async_container` と同一シグネチャ。
+//! 元の 0.28 の `core::containers::async_container` と同一シグネチャ。
 //!
 //! macOS (XPC) では内部で `XpcClient` を使い、Apple Container の XPC API を叩く。
 

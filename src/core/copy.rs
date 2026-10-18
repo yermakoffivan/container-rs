@@ -1,4 +1,4 @@
-//! コンテナへのファイルコピー関連。元の 0.27 の `core::copy` と同一シグネチャ。
+//! コンテナへのファイルコピー関連。元の 0.28 の `core::copy` と同一シグネチャ。
 //!
 //! macOS (XPC) では `CopyToContainer` の tar 構築は未実装。`AsyncRunner::start` の
 //! `copy_to_sources` 処理で XPC の `containerCopyIn` を呼ぶが、tar 経由ではなく
@@ -34,7 +34,7 @@ impl From<Vec<u8>> for CopyDataSource {
 
 /// コピー先のファイルオプション。
 ///
-/// 本家 testcontainers-rs 0.27 と同じフィールドを持つ。
+/// 本家 testcontainers-rs 0.28 と同じフィールドを持つ。
 /// macOS (Apple container XPC) では `containerCopyIn` が `fileMode` のみを受け付けるため、
 /// `mode` のみが反映され、`uid` / `gid` は反映できない。
 #[derive(Debug, Clone)]

@@ -1,6 +1,6 @@
 //! watchdog — テストプロセスがクラッシュした際の孤立コンテナ掃除。
 //!
-//! 本家 0.27 の `watchdog` feature はシグナルハンドラ方式だが、SIGKILL や
+//! 本家 0.28 の `watchdog` feature はシグナルハンドラ方式だが、SIGKILL や
 //! SIGSEGV によるクラッシュでは動かない。shiguredo は外部 reaper プロセス方式を採る:
 //! 起動したコンテナ ID を pipe 経由で reaper (`/bin/sh`) に登録し、reaper は
 //! stdin の EOF (親プロセスの死。シグナル種別を問わず必ず起きる) を検知したら

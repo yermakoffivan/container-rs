@@ -1,5 +1,5 @@
 //! `SyncRunner` — 同期 API のランナー。
-//! 元の 0.27 の `runners::sync_runner` に相当。
+//! 元の 0.28 の `runners::sync_runner` に相当。
 
 use std::sync::{Arc, Mutex, OnceLock, Weak};
 

@@ -1,5 +1,5 @@
 //! `AsyncRunner` — コンテナを非同期に起動するトレイト。
-//! 元の 0.27 の `runners::async_runner` と同一シグネチャ。
+//! 元の 0.28 の `runners::async_runner` と同一シグネチャ。
 //!
 //! macOS (XPC) では `ContainerRequest<I>` から `ContainerCfg` を構築し、
 //! XPC の `containerCreate` → `containerBootstrap` → `containerStartProcess` を呼ぶ。

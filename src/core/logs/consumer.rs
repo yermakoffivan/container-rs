@@ -1,4 +1,4 @@
-//! ログコンシューマ。元の 0.27 の `core::logs::consumer` と同一シグネチャ。
+//! ログコンシューマ。元の 0.28 の `core::logs::consumer` と同一シグネチャ。
 
 pub(crate) mod logging_consumer;
 
@@ -16,7 +16,7 @@ use crate::core::logs::LogFrame;
 /// 行長上限 (`line::MAX_LINE_LENGTH`) を超える行は、先頭を切り捨て
 /// フレームとして配信し残余を読み捨てる。切り捨てフレームは行の途中で切るため、行末の
 /// `\r` 除去は適用されない (行末以外の `\r` がフレームに残る可能性がある)。
-/// 本家 testcontainers-rs 0.27 のチャンク単位配信とは異なる。
+/// 本家 testcontainers-rs 0.28 のチャンク単位配信とは異なる。
 ///
 /// # 制約
 ///

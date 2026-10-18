@@ -1,4 +1,4 @@
-//! `Healthcheck` 設定型。本家 testcontainers-rs 0.27 と同一シグネチャ。
+//! `Healthcheck` 設定型。本家 testcontainers-rs 0.28 と同一シグネチャ。
 //!
 //! Linux (Docker Engine API) では create JSON の `Config.Healthcheck` に配線する。
 //! macOS では型・設定口は公開するが、`with_health_check` 指定時は start で明示エラーになる。

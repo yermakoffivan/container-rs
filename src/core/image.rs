@@ -1,5 +1,5 @@
 //! `Image` トレイトと `ImageExt` 拡張トレイト。
-//! 元の 0.27 の `core::image` と同一シグネチャ。
+//! 元の 0.28 の `core::image` と同一シグネチャ。
 
 pub(crate) mod exec;
 pub(crate) mod image_ext;
@@ -96,7 +96,7 @@ impl ContainerState {
 
     /// 実行中コンテナから状態 snapshot を取得する。
     ///
-    /// 本家 testcontainers-rs 0.27 と同じシグネチャ。
+    /// 本家 testcontainers-rs 0.28 と同じシグネチャ。
     pub async fn from_container<I: Image>(container: &ContainerAsync<I>) -> Result<Self> {
         container.container_state().await
     }

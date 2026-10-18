@@ -1,5 +1,5 @@
 //! `Container` — 同期 API のコンテナハンドル。
-//! 元の 0.27 の `core::containers::sync_container` に相当。
+//! 元の 0.28 の `core::containers::sync_container` に相当。
 //!
 //! macOS (XPC) では `ContainerAsync` を内部で `block_on` する同期ラッパー。
 
@@ -469,7 +469,7 @@ impl<I: Image> Drop for Container<I> {
     }
 }
 
-/// exec の結果 (同期版)。元の 0.27 の `SyncExecResult` と同一シグネチャ。
+/// exec の結果 (同期版)。元の 0.28 の `SyncExecResult` と同一シグネチャ。
 ///
 /// 本家はランタイム上でストリームを読み出すが、shiguredo は exec 完了時点で
 /// 全出力を取得済みのため、バッファ上のリーダーをそのまま返す。

@@ -1,4 +1,4 @@
-//! `ImageExt` 拡張トレイト。元の testcontainers 0.27 のサブセット（差分の正は `docs/TESTCONTAINERS.md` の該当節 2）。
+//! `ImageExt` 拡張トレイト。元の testcontainers 0.28 のサブセット（差分の正は `docs/TESTCONTAINERS.md` の該当節 2）。
 
 use std::time::Duration;
 

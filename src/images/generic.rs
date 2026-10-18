@@ -1,4 +1,4 @@
-//! `GenericImage`。元の 0.27 の `GenericImage` と同一シグネチャ。
+//! `GenericImage`。元の 0.28 の `GenericImage` と同一シグネチャ。
 
 use crate::{
     Image,

@@ -135,7 +135,7 @@ pub(crate) fn build_config<I: Image>(
     let image_ref = crate::core::client::xpc_client::normalize_image_reference(&req.descriptor());
 
     // cpus。Apple container のデフォルト (ContainerSystemConfig の defaultCPUs = 4) と同値。
-    // 本家 testcontainers 0.27 に CPU / メモリ指定の API は無いため固定値でよい。
+    // 本家 testcontainers 0.28 に CPU / メモリ指定の API は無いため固定値でよい。
     let cpus = 4i32;
 
     // working directory。

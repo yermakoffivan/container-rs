@@ -1,4 +1,4 @@
-//! 環境設定。本家 testcontainers-rs 0.27 の `core::env` に相当するが、
+//! 環境設定。本家 testcontainers-rs 0.28 の `core::env` に相当するが、
 //! macOS (XPC) バックエンドでは最小限の実装にとどめる。
 
 use std::collections::BTreeMap;

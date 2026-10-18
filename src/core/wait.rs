@@ -1,4 +1,4 @@
-//! 待機戦略。元の testcontainers 0.27 のサブセット（差分の正は `docs/TESTCONTAINERS.md` の該当節 10）。
+//! 待機戦略。元の testcontainers 0.28 のサブセット（差分の正は `docs/TESTCONTAINERS.md` の該当節 10）。
 //!
 //! `Log` はログ FD を読んで待機する。macOS では利用可能。Linux ではログ FD が無く、
 //! 非空メッセージ待ちは通常 startup timeout になる（空メッセージは即 Ok。詳細は docs 10.1）。

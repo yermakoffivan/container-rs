@@ -11,7 +11,7 @@ Apple の [container](https://github.com/apple/container) 対応をメインと�
 
 - **macOS がメイン対象**: Apple container の XPC API を自前実装で直接叩く。Docker Desktop 不要
 - **Linux 対応**: Docker Engine API (`/var/run/docker.sock`) を利用。ライフサイクル (start / exec / stop / rm / Drop)、ログ関連 (stdout / stderr / ログ待機 / LogConsumer)、ホストポート公開、ファイルコピー (`copy_file_from` / `with_copy_to`)、ヘルスチェック (`with_health_check` / `WaitFor::healthcheck`)、exec (stdout / stderr / env)、bridge IP 取得、pause / unpause、ExitWaitStrategy が動く。`with_ssh` / `with_masked_paths` / `with_readonly_paths` / `with_kernel` とネットワークの自動作成・自動削除などは未対応
-- **testcontainers-rs 互換 API**: 学習コスト削減のため公開 API を testcontainers-rs 0.27 に寄せている (完全互換は目指さない)
+- **testcontainers-rs 互換 API**: 学習コスト削減のため公開 API を testcontainers-rs 0.28 に寄せている (完全互換は目指さない)
 - **依存最小**: `base64ct` / `libc` / `nojson` / `shiguredo_http11` / `tokio` / `tracing`。bollard / reqwest / bytes 等は使わない
 - **黙って無視しない**: 未対応の設定はリクエストに保存だけして無視するのではなく、start / create 時に明示エラーを返す
 
